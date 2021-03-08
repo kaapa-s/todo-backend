@@ -57,5 +57,5 @@ app.delete("/todos/:todoId", findToDoById, (req, res) => {
 });
 
 app.listen(PORT, () => {
-  console.log(`Aplikacja wystrtowała na porcie ${PORT}`);
+  console.log(`Aplikacja wystrtowała na porcie ${PORT}.`);
 });
