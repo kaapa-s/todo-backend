@@ -8,7 +8,6 @@ app.use(express.json());
 const todoList = [];
 
 app.get("/", (req, res) => {
-  console.log(req);
   res.send("Serwer działa!");
 });
 
@@ -21,6 +20,42 @@ app.get("/todos", (req, res) => {
   res.json({ todoList });
 });
 
-app.listen(8888, () => {
-  console.log(`Aplikacja wystrtowała na porcie 8888`);
+app.delete("/todos/:todoId", (req, res) => {
+  const todoId = parseInt(req.params.todoId, 10);
+
+  const todoItemIndex = todoList.findIndex((e) => e.id === todoId);
+
+  if (todoItemIndex !== undefined) {
+    todoList.splice(todoItemIndex, 1);
+    res.status(200).end();
+  } else {
+    res.status(404).end();
+  }
+});
+
+app.patch("/todos/:todoId", (req, res) => {
+  const todoId = parseInt(req.params.todoId, 10);
+  const todoItem = todoList.find((e) => e.id === todoId);
+
+  if (todoItem) {
+    const update = req.body;
+
+    if (update.completed !== undefined) {
+      todoItem.completed = update.completed;
+    }
+
+    if (update.title !== undefined) {
+      todoItem.title = update.title;
+    }
+
+    res.status(200).end();
+  } else {
+    res.status(404).end();
+  }
+});
+
+const port = process.env.PORT || 8888;
+
+app.listen(port, () => {
+  console.log(`Aplikacja wystrtowała na porcie ${port}`);
 });
